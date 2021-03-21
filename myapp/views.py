@@ -1,10 +1,16 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from .forms import ContactForm
+from .models import Post
 
-# Create your views here.
-def contact(request):
 
-    
-    form = ContactForm()
-    return render(request, 'form.html', {'form' : form})
+def createpost(request):
+        if request.method == 'POST':
+            if request.POST.get('title') and request.POST.get('content'):
+                post=Post()
+                post.title= request.POST.get('title')
+                post.content= request.POST.get('content')
+                post.save()
+                
+                return render(request, 'createpost.html')  
+
+        else:
+                return render(request,'createpost.html')
